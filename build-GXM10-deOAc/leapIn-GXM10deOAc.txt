@@ -1,0 +1,52 @@
+source leaprc.GLYCAM_06j-1
+source leaprc.protein.ff14SB
+# 'tleap' input file
+# Creates GXM10 decasaccharide without O-acetylation.
+# SMA: 2,3,6-modified aMannose; ZMA: 2,3-modified aMannose
+# To execute (tested with AMBER 20 on Centos 7):
+# 'tleap -f leapIn-GXM10deOAc.txt'
+
+WAT = FB3
+loadAmberParams frcmod.tip3pfb
+
+gxm = sequence { OME SMA }	# To be acetylated in next stage
+
+set gxm tail gxm.2.O2 # set attachment to first mannose
+gxm = sequence { gxm 0XB } # First branch
+
+set gxm tail gxm.2.O3 # To next mannose
+gxm = sequence { gxm ZMA } # 2nd mannose
+
+set gxm tail gxm.4.O2 # set attachment to first mannose
+gxm = sequence { gxm 0XB } # 2nd branch
+
+set gxm tail gxm.4.O3 # set attachment to first mannose
+gxm = sequence { gxm SMA } # 3rd mannose, to be acetylated
+
+set gxm tail gxm.6.O2 # set attachment to first mannose
+gxm = sequence { gxm 0ZB } # 3rd branch
+
+set gxm tail gxm.6.O3 # set attachment to first mannose
+gxm = sequence { gxm SMA } # 4th mannose, to be acetylated
+
+set gxm tail gxm.8.O2 # set attachment to first mannose
+gxm = sequence { gxm 0XB } # 4th branch
+
+set gxm tail gxm.8.O3 # set attachment to first mannose
+gxm = sequence { gxm 2MA 0XB } # 5th mannose + xylose
+
+charge gxm
+saveamberparm gxm GXM10deOAc.prmtop GXM10deOAc.inpcrd
+savepdb gxm GXM10deOAc.pdb
+
+# If neutralization gives errors/warnings due to rounding problem use 'parmed' /
+# to set charge directly to neutralize. (see parmed input example)
+addIons gxm Na+ 0
+
+solvateBox gxm TIP3PFBOX 8.0
+saveamberparm gxm gxm10deOAc-tp3fb.prmtop gxm10deOAc-tp3fb.inpcrd
+savepdb gxm gxm10deOAc-tp3fb.pdb
+
+quit
+
+# Minimization is included in 'mdrun-full.com' script.

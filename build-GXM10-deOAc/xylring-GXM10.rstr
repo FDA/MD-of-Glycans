@@ -1,0 +1,35 @@
+# AMBER restraint file for Xyloses in PS GXM10deOAc;
+# b-Xylose rings should maintain a 4C1 chair configuration (all OH's equatorial) throughout the MD;
+# to achieve this with GLYCAM FF (as of 2023), restraints are required.
+# Two opposite torsions were restrained with below values.
+# NOTE: results, with torsion restraint ranges below, were inspected; but do check results always.
+# For instance, use cpptraj to check ring torsions correponding to a 4C1 chair through the MD.
+# Also, you may check the resulting energy contributions of restraints reported on the MD output
+# files (mdlog/*.out), it should be close to 0.0.
+# Atom numbers ('iat' below) obtained from PDB with:
+#	grep '0XB' gxm10deOAc.pdb | egrep 'O5|C1|C2|C3'; and
+#	grep '0XB' gxm10deOAc.pdb | egrep 'C3|C4|C5|O5'
+
+# See AMBER manual for details;
+# rk are energies weights, default is 2.0, set to 32kcal/mol (once value defined it doesn't change)
+# r(1-4) also remain unchanged until redefined.
+
+# Xyl residues are: 3, 5, 9, 11
+# Xyl-torsions [O5-C1-C2-C3] given first:
+ &rst     iat =     27,     25,     39,    35,
+	  r1 = 20.0, r2 = 30.0, r3 = 75.0, r4 = 85.0,
+	  rk2 =  32.0, rk3 =  32.0,		&end
+
+ &rst     iat =     65,     63,     77,    73,	&end
+ &rst     iat =     141,    139,    153,   149,	&end
+ &rst     iat =     180,    178,    192,   188,	&end
+
+# Definitions for Xyl torsions [C3-C4-C5-O5]
+ &rst     iat =     35,     31,     28,    27,
+	  r1 = -80.0, r2 = -70.0, r3 = -35.0, r4 = -25.0,
+	  rk2 =  32.0, rk3 =  32.0,		&end
+
+ &rst     iat =     73,     69,     66,    65,	&end
+ &rst     iat =     149,    145,    142,   141,	&end
+ &rst     iat =     188,    184,    181,   180,	&end
+
