@@ -1,5 +1,0 @@
-# Generate prmtop for HMR of gxm10deOAc
-parm gxm10deOAc-tp3fb.prmtop
-
-HMassRepartition
-parmout gxm10deOAcHMR-tp3fb.prmtop
