@@ -1,0 +1,66 @@
+source leaprc.GLYCAM_06j-1
+source leaprc.protein.ff14SB
+# Hugo Azurmendi - 01/02/2024; 'tleap' input file
+# Creates GXM10-Ac3 decasaccharide with O-acetylation.
+# SMA: 2,3,6-modified aMannose; ZMA: 2,3-modified aMannose
+# Xylose-b: 0XB; Glucuronic acid-b: 0ZB
+
+# To execute (tested with AMBER 20 on Centos 7):
+# 'tleap -f leapIn-gxm10Ac3.txt'
+
+# Note, charges should be corrected with 'parmed' for SMA@C6 to make the OS neutral;
+# this is done in the 'parmed' input file to create the HMR parameter file.
+
+WAT = FB3 
+loadAmberParams frcmod.tip3pfb
+
+gxm = sequence { OME SMA }      # GXM-deOAc
+set gxm tail gxm.2.O2		# Set branch at Man1-O2
+gxm=sequence { gxm 0XB } 	# Add bXyl branch
+
+set gxm tail gxm.2.O3		# Set for elongation at Man1-O3
+gxm=sequence { gxm ZMA } 	# Add Man2 
+
+set gxm tail gxm.4.O2		# Set branch at Man2-O2
+gxm=sequence { gxm 0XB } 	# Add bXyl branch
+
+set gxm tail gxm.4.O3		# Set for elongation at Man2-O3
+gxm=sequence { gxm SMA } 	# Add Man3 
+
+set gxm tail gxm.6.O2		# Set branch at Man3-O2
+gxm=sequence { gxm 0ZB } 	# Add bGlcA branch
+
+set gxm tail gxm.6.O3		# Set for elongation at Man3-O3
+gxm=sequence { gxm SMA } 	# Add Man4 
+
+set gxm tail gxm.8.O2		# Set branch at Man4-O2
+gxm=sequence { gxm 0XB } 	# Add bXyl branch
+
+set gxm tail gxm.8.O3		# Set for elongation at Man4-O3
+gxm=sequence { gxm 2MA } 	# Add Man5 (O3 is now OH)
+
+set gxm tail gxm.10.O2		# Set branch at Man5-O2
+gxm=sequence { gxm 0XB } 	# Add bXyl branch
+
+set gxm tail gxm.2.O6		# Set modification at Man1-O6
+gxm=sequence { gxm ACX } 	# Add acetyl
+
+set gxm tail gxm.6.O6		# Set modification at Man3-O6
+gxm=sequence { gxm ACX } 	# Add acetyl
+
+set gxm tail gxm.8.O6		# Set modification at Man4-O6
+gxm=sequence { gxm ACX } 	# Add acetyl
+
+
+charge gxm
+saveamberparm gxm gxm10Ac3.prmtop gxm10Ac3.inpcrd
+savepdb gxm gxm10Ac3.pdb
+
+# Neutralization gives error due to rounding problem; this is corrected later with parmed.
+addIons gxm Na+ 0
+
+solvateBox gxm TIP3PFBOX 8.0 iso
+saveamberparm gxm gxm10Ac3-tp3fb.prmtop gxm10Ac3-tp3fb.inpcrd
+savepdb gxm gxm10Ac3-tp3fb.pdb
+
+quit
