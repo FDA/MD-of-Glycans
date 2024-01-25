@@ -1,0 +1,92 @@
+source leaprc.GLYCAM_06j-1
+source leaprc.protein.ff14SB
+# Hugo Azurmendi - 01/02/2024; 'tleap' input file
+# Creates parameter file and initial coordinates of variants of C. neoformans CPS GXM.
+# GXM stands for glucuronoxylomannan PS, it's repeating unit consists of a trimer of Man backbone,
+# two branched with Xyl and one with GlcA (+ OAcs). This 'tleap' input builds GXM12RU.
+#
+# SMA: 2,3,6-modified aMannose; ZMA: 2,3-modified aMannose
+# Xylose-b: 0XB; Glucuronic acid-b: 0ZB
+
+# Note, charges should be corrected with 'parmed' for SMA@C6 to make the OS neutral;
+# this is done in the 'parmed' input file to create the HMR parameter file.
+
+WAT = FB3
+loadAmberParams frcmod.tip3pfb
+
+gxmru = sequence { SMA }	# 1st Man
+set gxmru tail gxmru.1.O2	# Set branch
+gxmru = sequence { gxmru 0XB }	# Add bXyl branch
+
+set gxmru tail gxmru.1.O3		# Set for elongation at Man1-O3
+gxmru=sequence { gxmru ZMA } 		# Add Man2
+
+set gxmru tail gxmru.3.O2		# Set branch at Man2-O2
+gxmru=sequence { gxmru 0XB } 		# Add bXyl branch
+
+set gxmru tail gxmru.3.O3		# Set for elongation at Man2-O3
+gxmru=sequence { gxmru SMA } 		# Add Man3
+
+set gxmru tail gxmru.6.O2		# Set branch at Man3-O2
+gxmru=sequence { gxmru 0ZB } 		# Add bGlcA branch
+
+set gxmru tail gxmru.1.O6		# Set modification at Man1-O6
+gxmru=sequence { gxmru ACX } 		# Add acetyl
+
+set gxmru tail gxmru.5.O6		# Set modification at Man3-O6
+gxmru=sequence { gxmru ACX }	 	# Add acetyl
+
+set gxmru tail gxmru.5.O3		# Set for elongation at Man3-O3
+# gxm is the OS
+gxm=sequence { gxmru gxmru } 		# Add GXMru; 2RU
+
+# Each RU consists of 8 residues (3man, 2xyl, 1glcA, 2OAc)
+set gxm tail gxm.13.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm gxmru } 		# Add GXMru; 3RU
+
+set gxm tail gxm.21.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm gxmru } 		# Add GXMru; 4RU
+
+set gxm tail gxm.29.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm gxmru } 		# Add GXMru; 5RU
+
+set gxm tail gxm.37.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm gxmru } 		# Add GXMru; 6RU
+
+set gxm tail gxm.45.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm gxmru } 		# Add GXMru; 7RU
+
+set gxm tail gxm.53.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm gxmru } 		# Add GXMru; 8RU
+
+set gxm tail gxm.61.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm gxmru } 		# Add GXMru; 9RU
+
+set gxm tail gxm.69.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm gxmru } 		# Add GXMru; 10RU
+
+set gxm tail gxm.77.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm gxmru } 		# Add GXMru; 11RU
+
+set gxm tail gxm.85.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm gxmru } 		# Add GXMru; 12RU
+
+set gxm tail gxm.93.O3			# Set for elongation at Man3-O3
+gxm=sequence { gxm 0MA } 		# Cap with Man
+
+gxm=sequence { OME gxm } 		# Cap first residue with OME
+
+
+charge gxm
+saveamberparm gxm gxm12ru.prmtop gxm12ru.inpcrd
+savepdb gxm gxm12ru.pdb
+
+# Neutralization gives error due to rounding problem; this is corrected later with parmed.
+addIons gxm Na+ 0
+
+solvateOct gxm TIP3PFBOX 8.0
+saveamberparm gxm gxm12ru-tp3fb.prmtop gxm12ru-tp3fb.inpcrd
+savepdb gxm gxm12ru-tp3fb.pdb
+
+quit
+

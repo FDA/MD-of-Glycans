@@ -1,0 +1,77 @@
+# AMBER restraint file for Xyloses in PS GXM12RU;
+# b-Xylose rings should maintain a 4C1 chair configuration (all OH's equatorial) throughout the MD;
+# to achieve this with GLYCAM FF (as of 2023), restraints are required.
+# Two opposite torsions were restrained with below values.
+# NOTE: results, with torsion restraint ranges below, were inspected; but do check results always.
+# For instance, use cpptraj to check ring torsions correponding to a 4C1 chair through the MD.
+# Also, you may check the resulting energy contributions of restraints reported on the MD output
+# files (mdlog/*.out), it should be close to 0.0.
+# Atom numbers ('iat' below) obtained from PDB with:
+#	grep '0XB' gxm12ru.pdb | egrep 'O5|C1|C2|C3'; and
+#	grep '0XB' gxm12ru.pdb | egrep 'C3|C4|C5|O5'
+
+# See AMBER manual for details;
+# rk are energies weights, default is 2.0, set to 32kcal/mol (once value defined it doesn't change)
+# r(1-4) also remain unchanged until redefined.
+# Xyl residues in gxm12ru are (for reference using 'egrep'):
+# 3, 5, 11, 13, 19, 21, 27, 29, 35, 37, 43, 45, 51, 53, 59, 61, 67, 69, 75, 77, 83, 85, 91, 93
+
+# Xyl-torsions [O5-C1-C2-C3] given first:
+
+ &rst     iat =     27,     25,     35,    39,
+	  r1 = 200.0, r2 = 210.0, r3 = 255.0, r4 = 265.0,
+	  rk2 =  32.0, rk3 =  32.0,			&end
+
+ &rst     iat =     65,     63,     73,    77,	  &end
+ &rst     iat =     153,    151,    161,   165,	  &end
+ &rst     iat =     191,    189,    199,   203,	  &end
+ &rst     iat =     279,    277,    287,   291,	  &end
+ &rst     iat =     317,    315,    325,   329,	  &end
+ &rst     iat =     405,    403,    413,   417,	  &end
+ &rst     iat =     443,    441,    451,   455,	  &end
+ &rst     iat =     531,    529,    539,   543,	  &end
+ &rst     iat =     569,    567,    577,   581,	  &end
+ &rst     iat =     657,    655,    665,   669,	  &end
+ &rst     iat =     695,    693,    703,   707,	  &end
+ &rst     iat =     783,    781,    791,   795,	  &end
+ &rst     iat =     821,    819,    829,   833,	  &end
+ &rst     iat =     909,    907,    917,   921,	  &end
+ &rst     iat =     947,    945,    955,   959,	  &end
+ &rst     iat =    1035,   1033,   1043,  1047,	  &end
+ &rst     iat =    1073,   1071,   1081,  1085,	  &end
+ &rst     iat =    1161,   1159,   1169,  1173,	  &end
+ &rst     iat =    1199,   1197,   1207,  1211,	  &end
+ &rst     iat =    1287,   1285,   1295,  1299,	  &end
+ &rst     iat =    1325,   1323,   1333,  1337,	  &end
+ &rst     iat =    1413,   1411,   1421,  1425,	  &end
+ &rst     iat =    1451,   1449,   1459,  1463,	  &end
+
+# Definitions for Xyl torsions C3-C4-C5-O5
+ &rst     iat =     27,     28,     31,    35,
+	  r1 = -80.0, r2 = -70.0, r3 = -35.0, r4 = -25.0,
+	  rk2 =  32.0, rk3 =  32.0,			&end
+
+ &rst     iat =     65,     66,     69,    73,	  &end
+ &rst     iat =     153,    154,    157,   161,	  &end
+ &rst     iat =     191,    192,    195,   199,	  &end
+ &rst     iat =     279,    280,    283,   287,	  &end
+ &rst     iat =     317,    318,    321,   325,	  &end
+ &rst     iat =     405,    406,    409,   413,	  &end
+ &rst     iat =     443,    444,    447,   451,	  &end
+ &rst     iat =     531,    532,    535,   539,	  &end
+ &rst     iat =     569,    570,    573,   577,	  &end
+ &rst     iat =     657,    658,    661,   665,	  &end
+ &rst     iat =     695,    696,    699,   703,	  &end
+ &rst     iat =     783,    784,    787,   791,	  &end
+ &rst     iat =     821,    822,    825,   829,	  &end
+ &rst     iat =     909,    910,    913,   917,	  &end
+ &rst     iat =     947,    948,    951,   955,	  &end
+ &rst     iat =    1035,   1036,   1039,  1043,	  &end
+ &rst     iat =    1073,   1074,   1077,  1081,	  &end
+ &rst     iat =    1161,   1162,   1165,  1169,	  &end
+ &rst     iat =    1199,   1200,   1203,  1207,	  &end
+ &rst     iat =    1287,   1288,   1291,  1295,	  &end
+ &rst     iat =    1325,   1326,   1329,  1333,	  &end
+ &rst     iat =    1413,   1414,   1417,  1421,	  &end
+ &rst     iat =    1451,   1452,   1455,  1459,	  &end
+

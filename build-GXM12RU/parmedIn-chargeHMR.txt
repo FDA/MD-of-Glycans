@@ -1,0 +1,9 @@
+# Addition of acetyl groups results in -0.024 per modification.
+# Below, charges are set to 0.2740 (up from 0.266)for the acetylated SMA@C6
+# With this change the total charge is zero.
+
+parm gxm12ru-tp3fb.prmtop
+change Charge :SMA@C6 0.2740
+
+HMassRepartition
+parmout gxm12ruHMR-tp3fb.prmtop
